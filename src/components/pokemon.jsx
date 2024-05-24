@@ -9,7 +9,7 @@ export default function GetPokemon({ generationNumber = 1 }) {
     async function getPokemon() {
       const generation = await fetch(`https://pokeapi.co/api/v2/generation/${generationNumber}/`);
       const generationData = await generation.json();
-      const allGenerationPokemon = await generationData.pokemon_species;
+      const allGenerationPokemon = generationData.pokemon_species;
       let randomPokemonNumber = allGenerationPokemon[Math.floor(Math.random() * allGenerationPokemon.length)];
       const thisPokemonName = randomPokemonNumber.name;
       const thisPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${thisPokemonName}/`);

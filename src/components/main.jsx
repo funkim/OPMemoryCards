@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "../styles/index.css";
-import CallPokemonAPI from "./pokemon";
+import App from "./getCards";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <CallPokemonAPI />
+    <App />
   </React.StrictMode>
 );
