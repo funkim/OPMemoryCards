@@ -1,44 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-export default function GetPokemon() {
+export default function GetPokemon({ generationNumber = 1 }) {
   const [pokemonSprite, setPokemonSprite] = useState(null);
   const [pokemonSound, setPokemonSound] = useState(null);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     async function getPokemon() {
-      const response = await fetch(
-        "https://pokeapi.co/api/v2/pokemon/clefairy/"
-      );
-      const data = await response.json();
-      console.log(data);
-      const sprite = data.sprites.front_default;
-      setPokemonSprite(sprite);
+      const generation = await fetch(`https://pokeapi.co/api/v2/generation/${generationNumber}/`);
+      const generationData = await generation.json();
+      const allGenerationPokemon = await generationData.pokemon_species;
+      let randomPokemonNumber = allGenerationPokemon[Math.floor(Math.random() * allGenerationPokemon.length)];
+      const thisPokemonName = randomPokemonNumber.name;
+      const thisPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${thisPokemonName}/`);
+      const thisPokemonData = await thisPokemon.json();
+      const thisPokemonSprite = thisPokemonData.sprites.other["official-artwork"].front_default;
+      const thisPokemonCry = thisPokemonData.cries.latest;
+      setPokemonSprite(thisPokemonSprite);
+      setPokemonSound(thisPokemonCry);
     }
 
     getPokemon();
-  }, []);
+  }, [generationNumber]);
 
-  async function fetchPokemonSound() {
-    const response = await fetch("https://pokeapi.co/api/v2/pokemon/clefairy/");
-    const data = await response.json();
-    const sound = data.cries.latest;
-    setPokemonSound(sound);
+  function playSound() {
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
   }
 
   return (
     <div className="pokemon">
-      {pokemonSprite ? (
-        <img
-          src={pokemonSprite}
-          alt="Pokemon Sprite"
-          onClick={fetchPokemonSound}
-        />
-      ) : (
-        <p>Loading...</p>
-      )}
-      {pokemonSound ? (
-        <audio src={pokemonSound} alt="Pokemon Sound" autoPlay />
-      ) : null}
+      {pokemonSprite ? <img src={pokemonSprite} alt="Pokemon Sprite" onClick={playSound} /> : <p>Loading...</p>}
+      {pokemonSound ? <audio ref={audioRef} src={pokemonSound} alt="Pokemon Sound" /> : null}
     </div>
   );
 }
