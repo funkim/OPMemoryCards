@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GetPokemon from "./pokemon.jsx";
 
 export default function App() {
@@ -6,6 +6,26 @@ export default function App() {
   const [difficulty, setDifficulty] = useState(6);
   const [clickedPokemon, setClickedPokemon] = useState([]);
   const [score, setScore] = useState(0);
+  const [pokemonList, setPokemonList] = useState([]);
+  const [visible, setVisible] = useState(true);
+
+  function shuffle(array) {
+    let currentIndex = array.length,
+      randomIndex;
+
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+  }
+
+  useEffect(() => {
+    setPokemonList(Array.from({ length: difficulty }, (_, index) => ({ key: index, generationNumber: generation })));
+  }, [generation, difficulty]);
 
   function handleGenerationClick(generation) {
     setGeneration(generation);
@@ -29,9 +49,16 @@ export default function App() {
     } else {
       setScore(score + 1);
     }
+
     setClickedPokemon([...clickedPokemon, pokemonData]);
-    console.log(...clickedPokemon);
+
+    setVisible(false);
+    setTimeout(() => {
+      setVisible(true);
+      setPokemonList(shuffle([...pokemonList]));
+    }, 1000);
   }
+
   return (
     <div>
       <h2>{score}</h2>
@@ -46,7 +73,7 @@ export default function App() {
       <button onClick={easyDifficulty}>Easy</button>
       <button onClick={normalDifficulty}>Normal</button>
       <button onClick={hardDifficulty}>Hard</button>
-      <GetPokemon generationNumber={generation} count={difficulty} onClick={handlePokemonClick} />
+      <GetPokemon generationNumber={generation} count={difficulty} pokemonList={pokemonList} visible={visible} onClick={handlePokemonClick} />
     </div>
   );
 }

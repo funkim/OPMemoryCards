@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-function Pokemon({ generationNumber, onClick }) {
+function Pokemon({ generationNumber, onClick, pokemonKey, visible }) {
   const [pokemonData, setPokemonData] = useState(null);
   const audioRef = useRef(null);
 
@@ -26,7 +26,7 @@ function Pokemon({ generationNumber, onClick }) {
     }
 
     getPokemon();
-  }, [generationNumber]);
+  }, [generationNumber, pokemonKey]);
 
   function handlePokemonClick() {
     if (audioRef.current) {
@@ -39,7 +39,7 @@ function Pokemon({ generationNumber, onClick }) {
 
   return (
     <div className="pokemon">
-      {pokemonData ? (
+      {visible && pokemonData ? (
         <img src={pokemonData.sprite} alt="Pokemon Sprite" onClick={handlePokemonClick} />
       ) : (
         <img src="https://i.etsystatic.com/14825908/r/il/850fbd/1818252638/il_570xN.1818252638_e8ii.jpg" alt="Empty Pokemon Sprite" />
@@ -49,11 +49,11 @@ function Pokemon({ generationNumber, onClick }) {
   );
 }
 
-export default function GetPokemon({ generationNumber, count, onClick }) {
+export default function GetPokemon({ generationNumber, count, pokemonList, visible, onClick }) {
   return (
     <div className="pokemon-container">
-      {Array.from({ length: count }).map((_, index) => (
-        <Pokemon key={index} generationNumber={generationNumber} onClick={onClick} />
+      {pokemonList.map((pokemon) => (
+        <Pokemon key={pokemon.key} pokemonKey={pokemon.key} generationNumber={pokemon.generationNumber} onClick={onClick} visible={visible} />
       ))}
     </div>
   );
