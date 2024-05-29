@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import GetPokemon from "./pokemon.jsx";
+import { Shuffle } from "./pokemon.jsx";
 
 export default function App() {
   const [generation, setGeneration] = useState(1);
@@ -8,61 +9,91 @@ export default function App() {
   const [score, setScore] = useState(0);
   const [pokemonList, setPokemonList] = useState([]);
   const [visible, setVisible] = useState(true);
+  const [win, setWin] = useState(false);
+  const [lose, setLose] = useState(false);
 
-  function shuffle(array) {
-    let currentIndex = array.length,
-      randomIndex;
-
-    while (currentIndex !== 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-    }
-
-    return array;
+  function generatePokemonList() {
+    return Array.from({ length: difficulty }, (_, index) => ({
+      key: index + Date.now(), // ensure unique keys
+      generationNumber: generation,
+    }));
   }
 
   useEffect(() => {
-    setPokemonList(Array.from({ length: difficulty }, (_, index) => ({ key: index, generationNumber: generation })));
+    setPokemonList(generatePokemonList());
   }, [generation, difficulty]);
 
   function handleGenerationClick(generation) {
     setGeneration(generation);
     setClickedPokemon([]);
+    setWin(false);
+    setLose(false);
     setScore(0);
+    setPokemonList(generatePokemonList());
   }
 
   function easyDifficulty() {
     setDifficulty(3);
+    setPokemonList(generatePokemonList());
   }
+
   function normalDifficulty() {
     setDifficulty(6);
+    setPokemonList(generatePokemonList());
   }
+
   function hardDifficulty() {
     setDifficulty(9);
+    setPokemonList(generatePokemonList());
+  }
+
+  function RestartGame() {
+    setScore(0);
+    setClickedPokemon([]);
+    setWin(false);
+    setLose(false);
+    setPokemonList(generatePokemonList());
+  }
+
+  function WinHandler() {
+    setWin(true);
+  }
+
+  function LostHandler() {
+    setScore(0);
+    setClickedPokemon([]);
+    setPokemonList(generatePokemonList());
+    setLose(true);
   }
 
   function handlePokemonClick(pokemonData) {
     if (clickedPokemon.some((pokemon) => pokemon.name === pokemonData.name)) {
-      setScore(0);
+      LostHandler();
     } else {
-      setScore(score + 1);
+      setLose(false);
+      const newScore = score + 1;
+      setScore(newScore);
+      if (newScore === difficulty) {
+        WinHandler();
+      }
     }
-
     setClickedPokemon([...clickedPokemon, pokemonData]);
-
     setVisible(false);
     setTimeout(() => {
+      setPokemonList(Shuffle([...pokemonList]));
       setVisible(true);
-      setPokemonList(shuffle([...pokemonList]));
     }, 1000);
   }
 
+  console.log(pokemonList);
   return (
-    <div>
-      <h2>{score}</h2>
-      <div>
+    <div className="container">
+      <div className="gamestate">
+        <h2>{score}</h2>
+        {win && <h2>You Win!</h2>}
+        {lose && <h2>You Lost!</h2>}
+      </div>
+      <div className="buttons">
         <input type="button" id="One" onClick={() => handleGenerationClick(1)} value="Generation 1" />
         <input type="button" id="Two" onClick={() => handleGenerationClick(2)} value="Generation 2" />
         <input type="button" id="Three" onClick={() => handleGenerationClick(3)} value="Generation 3" />
@@ -73,6 +104,9 @@ export default function App() {
       <button onClick={easyDifficulty}>Easy</button>
       <button onClick={normalDifficulty}>Normal</button>
       <button onClick={hardDifficulty}>Hard</button>
+      <div className="restart">
+        <input type="button" id="restart" onClick={RestartGame} value="Restart?" />
+      </div>
       <GetPokemon generationNumber={generation} count={difficulty} pokemonList={pokemonList} visible={visible} onClick={handlePokemonClick} />
     </div>
   );

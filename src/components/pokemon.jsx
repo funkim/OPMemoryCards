@@ -22,12 +22,13 @@ function Pokemon({ generationNumber, onClick, pokemonKey, visible }) {
         sprite: thisPokemonSprite,
         cry: thisPokemonCry,
         data: thisPokemonData,
+        number: randomPokemonNumber,
       });
     }
-
     getPokemon();
   }, [generationNumber, pokemonKey]);
 
+  console.log(pokemonData);
   function handlePokemonClick() {
     if (audioRef.current) {
       audioRef.current.play();
@@ -49,12 +50,26 @@ function Pokemon({ generationNumber, onClick, pokemonKey, visible }) {
   );
 }
 
-export default function GetPokemon({ generationNumber, count, pokemonList, visible, onClick }) {
+export default function GetPokemon({ generationNumber, count, pokemonList, visible, onClick, pokemonNumber }) {
   return (
     <div className="pokemon-container">
       {pokemonList.map((pokemon) => (
-        <Pokemon key={pokemon.key} pokemonKey={pokemon.key} generationNumber={pokemon.generationNumber} onClick={onClick} visible={visible} />
+        <Pokemon key={pokemon.key} generationNumber={pokemon.generationNumber} onClick={onClick} visible={visible} pokemonNumber={pokemon.number} />
       ))}
     </div>
   );
+}
+
+export function Shuffle(array) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
 }
