@@ -43,7 +43,7 @@ export default function App() {
   }
 
   function hardDifficulty() {
-    setDifficulty(9);
+    setDifficulty(10);
     setPokemonList(generatePokemonList());
   }
 
@@ -89,11 +89,15 @@ export default function App() {
   return (
     <div className="container">
       <div className="gamestate">
-        <h2>{score}</h2>
+        <h2>
+          Score : {score} / {difficulty}
+        </h2>
+
+        <input type="button" id="restart" onClick={RestartGame} value="Restart?" />
         {win && <h2>You Win!</h2>}
         {lose && <h2>You Lost!</h2>}
       </div>
-      <div className="buttons">
+      <div className="generations">
         <input type="button" id="One" onClick={() => handleGenerationClick(1)} value="Generation 1" />
         <input type="button" id="Two" onClick={() => handleGenerationClick(2)} value="Generation 2" />
         <input type="button" id="Three" onClick={() => handleGenerationClick(3)} value="Generation 3" />
@@ -101,11 +105,10 @@ export default function App() {
         <input type="button" id="Five" onClick={() => handleGenerationClick(5)} value="Generation 5" />
         <input type="button" id="Six" onClick={() => handleGenerationClick(6)} value="Generation 6" />
       </div>
-      <button onClick={easyDifficulty}>Easy</button>
-      <button onClick={normalDifficulty}>Normal</button>
-      <button onClick={hardDifficulty}>Hard</button>
-      <div className="restart">
-        <input type="button" id="restart" onClick={RestartGame} value="Restart?" />
+      <div className="difficulties">
+        <input type="button" onClick={easyDifficulty} value="Easy" />
+        <input type="button" onClick={normalDifficulty} value="Normal" />
+        <input type="button" onClick={hardDifficulty} value="Hard" />
       </div>
       <GetPokemon generationNumber={generation} count={difficulty} pokemonList={pokemonList} visible={visible} onClick={handlePokemonClick} />
     </div>
