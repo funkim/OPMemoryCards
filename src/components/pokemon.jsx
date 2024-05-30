@@ -13,6 +13,10 @@ function Pokemon({ generationNumber, onClick, pokemonKey, visible }) {
       const thisPokemonName = randomPokemonNumber.name;
       const thisPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${thisPokemonName}/`);
       const thisPokemonData = await thisPokemon.json();
+      if (thisPokemonData == "N") {
+        getPokemon;
+        console.log("refetch'd");
+      }
       let thisPokemonSprite = thisPokemonData.sprites.other["official-artwork"].front_default
         ? thisPokemonData.sprites.other["official-artwork"].front_default
         : thisPokemonData.sprites.front_default;
@@ -28,7 +32,6 @@ function Pokemon({ generationNumber, onClick, pokemonKey, visible }) {
     getPokemon();
   }, [generationNumber, pokemonKey]);
 
-  console.log(pokemonData);
   function handlePokemonClick() {
     if (audioRef.current) {
       audioRef.current.play();
@@ -43,18 +46,18 @@ function Pokemon({ generationNumber, onClick, pokemonKey, visible }) {
       {visible && pokemonData ? (
         <img src={pokemonData.sprite} alt="Pokemon Sprite" onClick={handlePokemonClick} />
       ) : (
-        <img src="https://i.etsystatic.com/14825908/r/il/850fbd/1818252638/il_570xN.1818252638_e8ii.jpg" alt="Empty Pokemon Sprite" />
+        <img src="https://pngfre.com/wp-content/uploads/Pokeball-1.png" alt="Empty Pokemon Sprite" className="empty" />
       )}
       {pokemonData?.cry ? <audio ref={audioRef} src={pokemonData.cry} alt="Pokemon Sound" /> : null}
     </div>
   );
 }
 
-export default function GetPokemon({ generationNumber, count, pokemonList, visible, onClick, pokemonNumber }) {
+export default function GetPokemon({ pokemonList, visible, generationNumber, onClick }) {
   return (
     <div className="pokemon-container">
       {pokemonList.map((pokemon) => (
-        <Pokemon key={pokemon.key} generationNumber={pokemon.generationNumber} onClick={onClick} visible={visible} pokemonNumber={pokemon.number} />
+        <Pokemon key={pokemon.key} generationNumber={pokemon.generationNumber} onClick={onClick} visible={visible} />
       ))}
     </div>
   );

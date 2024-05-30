@@ -1,42 +1,88 @@
+@import url("https://fonts.cdnfonts.com/css/pokemon-solid");
+
 html,
 body {
+  font-family: "Pokemon Solid", sans-serif;
   margin: 0px;
   padding: 0px;
 }
 
+h2 {
+  font-size: 2rem;
+  font-weight: 100;
+}
 .container {
   display: grid;
   width: 100vw;
   height: 100vh;
-  grid-template-rows: auto;
   justify-content: center;
   justify-items: center;
-  grid-template-rows: 1fr 1fr 1fr 1fr 6fr;
+  grid-template-rows: 3fr 1fr 1fr 1fr 5fr;
   text-align: center;
 }
 
 .pokemon-container {
   display: flex;
+  grid-row: 4/5;
   flex-wrap: wrap;
   flex: auto;
-  max-width: 50%;
+  max-width: 70%;
   max-height: 50%;
   justify-content: center;
+  gap: 20px;
 }
 
+img {
+  max-width: 90vw;
+}
+.pokemon {
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.empty {
+  max-width: 475px;
+  cursor: none;
+}
+
+.pokemon:hover {
+  transform: scale(1.2) translateY(10px);
+  filter: drop-shadow(1px 2px 3px hsl(220deg 60% 50% / 0.3)) drop-shadow(2px 4px 6px hsl(220deg 60% 50% / 0.3))
+    drop-shadow(4px 8px 12px hsl(220deg 60% 50% / 0.3));
+}
+
+.gamestate {
+  grid-row: 1/2;
+}
 .generations {
+  grid-row: 2/3;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin: 20px;
   gap: 10px;
 }
 
 .difficulties {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+  grid-row: 3/4;
 }
 
 input {
-  font-size: 1.2rem;
+  font-family: "Pokemon Solid", sans-serif;
+  border: red solid 2px;
+  font-size: 1.5rem;
   border-radius: 5px;
   padding: 8px;
+  cursor: pointer;
+  font-weight: 100;
+  transition: all 0.2s ease-in-out;
+}
+
+input:hover {
+  transform: scale(1.2) translateY(10px);
+  background-color: red;
+  color: white;
 }

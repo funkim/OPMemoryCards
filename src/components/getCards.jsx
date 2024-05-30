@@ -23,35 +23,26 @@ export default function App() {
     setPokemonList(generatePokemonList());
   }, [generation, difficulty]);
 
-  function handleGenerationClick(generation) {
-    setGeneration(generation);
+  function resetGameData() {
     setClickedPokemon([]);
     setWin(false);
     setLose(false);
     setScore(0);
-    setPokemonList(generatePokemonList());
   }
 
-  function easyDifficulty() {
-    setDifficulty(3);
-    setPokemonList(generatePokemonList());
+  function handleGenerationClick(generation) {
+    setGeneration(generation);
+    resetGameData();
   }
 
-  function normalDifficulty() {
-    setDifficulty(6);
-    setPokemonList(generatePokemonList());
-  }
-
-  function hardDifficulty() {
-    setDifficulty(10);
+  function changeDifficulty(difficulty) {
+    resetGameData();
+    setDifficulty(difficulty);
     setPokemonList(generatePokemonList());
   }
 
   function RestartGame() {
-    setScore(0);
-    setClickedPokemon([]);
-    setWin(false);
-    setLose(false);
+    resetGameData();
     setPokemonList(generatePokemonList());
   }
 
@@ -61,9 +52,37 @@ export default function App() {
 
   function LostHandler() {
     setScore(0);
-    setClickedPokemon([]);
+    setWin(false);
     setPokemonList(generatePokemonList());
     setLose(true);
+  }
+
+  function ShowBalls() {
+    const balls = [];
+    // Add filled Poké Balls based on the score
+    for (let i = 0; i < score; i++) {
+      balls.push(
+        <img
+          key={`filled-${i}`}
+          src="https://p1.hiclipart.com/preview/742/695/612/pokeball-pokeball-illustraion-png-clipart.jpg"
+          alt="Poké Ball"
+          style={{ width: "50px", height: "50px", margin: "5px" }}
+        />
+      );
+    }
+    // Add empty Poké Balls based on the remaining difficulty
+    for (let i = score; i < difficulty; i++) {
+      balls.push(
+        <img
+          key={`empty-${i}`}
+          src="https://p1.hiclipart.com/preview/742/695/612/pokeball-pokeball-illustraion-png-clipart.jpg"
+          alt="Poké Ball"
+          style={{ width: "50px", height: "50px", margin: "5px", opacity: "0.2" }}
+        />
+      );
+    }
+
+    return <div className="pokeballs">{balls}</div>;
   }
 
   function handlePokemonClick(pokemonData) {
@@ -85,14 +104,13 @@ export default function App() {
     }, 1000);
   }
 
-  console.log(pokemonList);
   return (
     <div className="container">
       <div className="gamestate">
         <h2>
           Score : {score} / {difficulty}
         </h2>
-
+        <ShowBalls difficulty={difficulty} score={score} />
         <input type="button" id="restart" onClick={RestartGame} value="Restart?" />
         {win && <h2>You Win!</h2>}
         {lose && <h2>You Lost!</h2>}
@@ -106,11 +124,11 @@ export default function App() {
         <input type="button" id="Six" onClick={() => handleGenerationClick(6)} value="Generation 6" />
       </div>
       <div className="difficulties">
-        <input type="button" onClick={easyDifficulty} value="Easy" />
-        <input type="button" onClick={normalDifficulty} value="Normal" />
-        <input type="button" onClick={hardDifficulty} value="Hard" />
+        <input type="button" onClick={() => changeDifficulty(3)} value="Easy" />
+        <input type="button" onClick={() => changeDifficulty(6)} value="Normal" />
+        <input type="button" onClick={() => changeDifficulty(10)} value="Hard" />
       </div>
-      <GetPokemon generationNumber={generation} count={difficulty} pokemonList={pokemonList} visible={visible} onClick={handlePokemonClick} />
+      <GetPokemon generationNumber={generation} pokemonList={pokemonList} visible={visible} onClick={handlePokemonClick} />
     </div>
   );
 }
