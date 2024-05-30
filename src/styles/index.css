@@ -17,7 +17,6 @@ h2 {
   height: 100vh;
   justify-content: center;
   justify-items: center;
-  grid-template-rows: 3fr 1fr 1fr 1fr 5fr;
   text-align: center;
 }
 
@@ -26,20 +25,20 @@ h2 {
   grid-row: 4/5;
   flex-wrap: wrap;
   flex: auto;
-  max-width: 70%;
   max-height: 50%;
   justify-content: center;
   gap: 20px;
 }
 
-img {
-  max-width: 90vw;
-}
 .pokemon {
   cursor: pointer;
   transition: all 0.1s ease-in-out;
+  max-width: 50%;
 }
 
+img {
+  max-width: 80%;
+}
 .empty {
   max-width: 475px;
   cursor: none;
