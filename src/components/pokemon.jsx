@@ -34,6 +34,7 @@ function Pokemon({ generationNumber, onClick, pokemonKey, visible }) {
 
   function handlePokemonClick() {
     if (audioRef.current) {
+      audioRef.current.volume = 0.1;
       audioRef.current.play();
     }
     if (onClick && pokemonData) {
