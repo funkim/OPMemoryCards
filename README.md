@@ -1,8 +1,6 @@
-# React + Vite
+# Memory Cards!
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Provides 3 different difficulties with the ability to choose 
+which generation (1-6) you'd like the Pokemon to be from that are randomly chosen.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Screenshot_20240530_085642](https://github.com/funkim/Pokemon-Memory-Cards/assets/148171304/23c8b15d-14c9-4ce1-84f2-00a6a793517c)
