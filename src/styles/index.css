@@ -18,6 +18,7 @@ h2 {
   justify-content: center;
   justify-items: center;
   text-align: center;
+  grid-template-rows: repeat(3, 1fr) 6fr;
 }
 
 .pokemon-container {
@@ -31,13 +32,16 @@ h2 {
 }
 
 .pokemon {
+  display: flex;
+  width: fit-content;
+  justify-content: center;
   cursor: pointer;
   transition: all 0.1s ease-in-out;
-  max-width: 50%;
+  max-width: 90%;
 }
 
 img {
-  max-width: 80%;
+  max-width: 50%;
 }
 .empty {
   max-width: 475px;
@@ -53,6 +57,7 @@ img {
 .gamestate {
   grid-row: 1/2;
 }
+
 .generations {
   grid-row: 2/3;
   display: flex;
@@ -78,6 +83,7 @@ input {
   cursor: pointer;
   font-weight: 100;
   transition: all 0.2s ease-in-out;
+  max-width: 200px;
 }
 
 input:hover {
